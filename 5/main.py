@@ -13,12 +13,14 @@ def reverse_caps(c):
 
 def reduce(input):
     result = input
+    start = 0
     found = True
     while found:
         found = False
-        for i in range(len(result) - 1):
+        for i in range(start, len(result) - 1):
             if result[i] == reverse_caps(result[i + 1]):
                 result = result[:i] + result[i + 2:]
+                start = max(0, i - 1)
                 found = True
                 break
     return result
