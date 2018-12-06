@@ -4,10 +4,7 @@ import sys
 
 
 def run_1(input):
-    result = 0
-    for c in [int(e) for e in input.split("\n")]:
-        result += c
-    return result
+    return sum([int(e) for e in input.split("\n")])
 
 
 def run_2(input):

@@ -1,5 +1,17 @@
 .idea
+*.iml
 *.pyc
 __pycache__
 .cache
 input
+
+target
+classes
+checkouts
+pom.xml
+pom.xml.asc
+*.jar
+*.class
+.lein-*
+.nrepl-port
+
