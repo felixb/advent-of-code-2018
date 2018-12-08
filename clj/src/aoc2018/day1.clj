@@ -5,10 +5,11 @@
   (map (fn [s] (Integer/parseInt s)) (split-lines input)))
 
 (defn run1 [input]
-  (reduce + input))
+  (reduce + (parse input)))
 
 (defn run2 [input]
-  (let [len (count input)]
+  (let [input (parse input)
+        len (count input)]
     (loop [i 0
            sum 0
            freqs (set '())]
@@ -18,9 +19,3 @@
           (mod (+ i 1) len)
           (+ sum (nth input i))
           (conj freqs sum))))))
-
-(defn run [variant input]
-  (let [parsed (parse input)]
-    (if (= 1 variant)
-      (run1 parsed)
-      (run2 parsed))))
