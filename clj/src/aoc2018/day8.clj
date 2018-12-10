@@ -18,16 +18,14 @@
 (defn dec-stack [stack]
   (if (empty? stack)
     stack
-    (let [top (peek stack)
-          num-children (dec (first top))
-          num-fields (second top)]
-      (conj (pop stack) [num-children num-fields]))))
+    (let [top (peek stack)]
+      (conj (pop stack) (assoc top :num-children (dec (:num-children top)))))))
 
 (defn peek-reader [reader]
   (peek (:stack reader)))
 
 (defn read-meta-data [reader]
-  (let [num-fields (second (peek-reader reader))
+  (let [num-fields (:num-fields (peek-reader reader))
         start (:position reader)
         end (+ start num-fields)
         sum (apply + (map #(nth (:input reader) %1) (range start end)))
@@ -40,13 +38,14 @@
 (defn read-header [reader]
   (let [input (:input reader)
         position (:position reader)
-        header [(nth input position) (nth input (inc position))]]
+        header {:num-children (nth input position)
+                :num-fields   (nth input (inc position))}]
     (assoc reader
       :stack (conj (:stack reader) header)
       :position (+ (:position reader) 2))))
 
 (defn children? [reader]
-  (> (first (peek-reader reader)) 0))
+  (> (:num-children (peek-reader reader)) 0))
 
 (defn read-next [reader]
   (if (or (empty? (:stack reader)) (children? reader))
