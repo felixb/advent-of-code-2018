@@ -3,6 +3,7 @@
   (:require [aoc2018.day7])
   (:require [aoc2018.day8])
   (:require [aoc2018.day9])
+  (:require [aoc2018.day11])
   )
 
 (defn -main
