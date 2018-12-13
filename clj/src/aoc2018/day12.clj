@@ -57,8 +57,8 @@
            states {}
            state initial-state
            first-index 0]
-      (if (or (zero? i) (= i generations) (zero? (mod i 1000)))
-        (println i first-index ":" state))
+      ;(if (or (zero? i) (= i generations) (zero? (mod i 1000)))
+      ;  (println i first-index ":" state))
       (if (= i generations)
         (eval-state state first-index)
         (let [[generation-with-same-state old-first-index] (get states state)
