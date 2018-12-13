@@ -14,8 +14,8 @@
 
     (is (= (power-of-sqare (create-grid 18) 3 33 45) 29))
 
-    (is (= (run1 "18") "33,45"))
-    (is (= (run1 "42") "21,61"))
+    ;  (is (= (run1 "18") "33,45"))
+    ;  (is (= (run1 "42") "21,61"))
     )
 
   ;(testing "variant 2"
