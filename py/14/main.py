@@ -19,6 +19,10 @@ def new_position(receipts, p):
     return (p + 1 + receipts[p]) % len(receipts)
 
 
+def to_s(receipts):
+    return "".join([str(j) for j in receipts])
+
+
 def run_1(input):
     l = parse(input)
     receipts = [3, 7]
@@ -26,11 +30,25 @@ def run_1(input):
     for i in range(2, l + 10):
         receipts.extend(new_receipt(receipts, elves))
         elves = [new_position(receipts, e) for e in elves]
-    return "".join([str(j) for j in receipts[l:l + 10]])
+    return to_s(receipts[l:l + 10])
 
 
 def run_2(input):
-    return None
+    receipts = [3, 7]
+    receipts_s = to_s(receipts)
+    elves = [0, 1]
+    l = len(input)
+    while True:
+        ext = new_receipt(receipts, elves)
+        receipts.extend(ext)
+        receipts_s += to_s(ext)
+        elves = [new_position(receipts, e) for e in elves]
+        rl = len(receipts_s)
+        if rl >= l:
+            try:
+                return str(receipts_s.index(input, rl - l))
+            except ValueError:
+                pass
 
 
 if __name__ == '__main__':

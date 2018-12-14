@@ -18,7 +18,15 @@ class Test(unittest.TestCase):
             self.assertEqual(o, run_1(i), 'failed with input %s' % i)
 
     def test_2(self):
-        self.assertEqual(None, run_2("5"))
+        cases = {
+            '5': "01245",
+            '9': "51589",
+            '18': "92510",
+            '2018': "59414",
+        }
+
+        for o, i in cases.items():
+            self.assertEqual(o, run_2(i), 'failed with input %s' % i)
 
 
 if __name__ == '__main__':
