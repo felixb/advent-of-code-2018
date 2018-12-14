@@ -104,14 +104,13 @@ def run_1(input):
 def run_2(input):
     carts = parse(input)
     i = 0
-    while len(carts) > 1:
+    while len(carts) > 1 or carts[0].ticks < i:
         try:
             carts = tick(carts, i)
             i += 1
         except CrashError as e:
             carts = [cart for cart in carts if e.index != cart.index()]
     cart = carts[0]
-    cart.tick(i + 1)
     return "%d,%d" % (cart.x, cart.y)
 
 
