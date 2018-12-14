@@ -12,9 +12,10 @@ TURNS = {
 
 
 class CrashError(RuntimeError):
-    def __init__(self, x, y):
+    def __init__(self, x, y, index):
         self.x = x
         self.y = y
+        self.index = index
 
 
 class Cart:
@@ -23,6 +24,7 @@ class Cart:
         self.__track_width = len(tracks[0])
         self.__direction = direction
         self.__turns = 0
+        self.ticks = None
         self.x = x
         self.y = y
 
@@ -42,7 +44,8 @@ class Cart:
     def __current_track(self):
         return self.__track_at(self.x, self.y)
 
-    def tick(self):
+    def tick(self, ticks):
+        self.ticks = ticks
         [self.x, self.y] = self.__position_ahead()
         t = self.__current_track()
         if t == '-' or t == '|':
@@ -80,10 +83,10 @@ def parse(input):
 
 def tick(carts, i):
     # print("%d: %s" % (i, carts))
-    for cart in carts:
-        cart.tick()
+    for cart in [cart for cart in carts if cart.ticks != i]:
+        cart.tick(i)
         if 2 <= len([c.index() for c in carts if c.index() == cart.index()]):
-            raise CrashError(cart.x, cart.y)
+            raise CrashError(cart.x, cart.y, cart.index())
     return sorted(carts, key=Cart.index)
 
 
@@ -99,7 +102,17 @@ def run_1(input):
 
 
 def run_2(input):
-    return None
+    carts = parse(input)
+    i = 0
+    while len(carts) > 1:
+        try:
+            carts = tick(carts, i)
+            i += 1
+        except CrashError as e:
+            carts = [cart for cart in carts if e.index != cart.index()]
+    cart = carts[0]
+    cart.tick(i + 1)
+    return "%d,%d" % (cart.x, cart.y)
 
 
 if __name__ == '__main__':

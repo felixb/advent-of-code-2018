@@ -31,6 +31,19 @@ class Test(unittest.TestCase):
 
         self.assertEqual("7,3", run_1(input))
 
+    def test_2(self):
+        input = "\n".join([
+            '/>-<\  ',
+            '|   |  ',
+            '| /<+-\\',
+            '| | | v',
+            '\>+</ |',
+            '  |   ^',
+            '  \<->/',
+        ])
+
+        self.assertEqual("6,4", run_2(input))
+
 
 if __name__ == '__main__':
     unittest.main()
