@@ -50,11 +50,11 @@ class Pathfinder:
 
 
 class Unit:
-    def __init__(self, field, type, x, y):
+    def __init__(self, field, type, x, y, power=3):
         self.__field = field
         self.__field_width = len(field[0])
         self.__field_height = len(field)
-        self.__power = 3
+        self.__power = power
         self.type = type
         self.ticks = None
         self.hitpoints = 200
@@ -146,12 +146,15 @@ def parse_field(input):
     return [[f == '.' for f in row] for row in parsed]
 
 
-def parse_units(input, field):
+def parse_units(input, field, power=3):
     units = []
     for y, row in enumerate(input.split("\n")):
         for x, f in enumerate(row):
             if f in ['G', 'E']:
-                units.append(Unit(field, f, x, y))
+                if f == 'E':
+                    units.append(Unit(field, f, x, y, power))
+                else:
+                    units.append(Unit(field, f, x, y))
     return units
 
 
@@ -193,8 +196,34 @@ def run_1(input):
     return i * sum([u.hitpoints for u in units])
 
 
+def run_2_with_power(field, input, power):
+    i = 0
+    units = parse_units(input, field, power)
+    le = len([u for u in units if u.type == 'E'])
+    while len(set([u.type for u in units])) > 1:
+        for y, row in enumerate(field):
+            row = [b_to_f(b) for b in row]
+            for u in [u for u in units if u.y == y]:
+                row[u.x] = u.type
+            s = ""
+            for f in row:
+                s += f
+        units = tick(units, i)
+        if not [u for u in units if u.ticks != i]:
+            i += 1
+        if le > len([u for u in units if u.type == 'E']):
+            return None
+    return i * sum([u.hitpoints for u in units])
+
+
 def run_2(input):
-    return None
+    field = parse_field(input)
+    for power in range(4, 200):
+        r = run_2_with_power(field, input, power)
+        if r:
+            return r
+    else:
+        return None
 
 
 if __name__ == '__main__':
