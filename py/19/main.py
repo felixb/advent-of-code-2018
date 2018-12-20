@@ -113,12 +113,15 @@ def parse(input):
     return ipr, program
 
 
-def run(input, init=0):
+def run(input, init=[0,0,0,0,0,0]):
     ipr, program = parse(input)
-    ip = 0
-    regs = [init, 0, 0, 0, 0, 0]
+    ip = 10
+    regs = init[:]
     while ip < len(program):
-        ip = exec(ipr, ip, regs, program[ip])
+        line = program[ip]
+        ip = exec(ipr, ip, regs, line)
+        if line[3] == ipr:
+            print("jmp:", line, ip, regs)
     return regs[0]
 
 
@@ -127,7 +130,8 @@ def run_1(input):
 
 
 def run_2(input):
-    return run(input, 1)
+    return run(input, [1,0,0,0,0,0])
+    #return run(input, [0, 10, 10551307, 0, 10551306, 2])
 
 
 if __name__ == '__main__':
